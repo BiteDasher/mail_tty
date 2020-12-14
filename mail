@@ -50,13 +50,13 @@ check_private_key() {
 	fi
 }
 check_public_key() {
-	if ! grep -o "$public_user .*" "$active_dir"/$user.conf/public_keys | cut -d " " -f 2 | openssl enc -k "$public_key" -aes256 -base64 -A -d -in - -pbkdf2 &>/dev/null; then
+	if ! grep -o "^$public_user .*" "$active_dir"/$user.conf/public_keys | cut -d " " -f 2 | openssl enc -k "$public_key" -aes256 -base64 -A -d -in - -pbkdf2 &>/dev/null; then
 		echo "Incorrect public encryption key entered"
 		exit 2
 	fi
 }
 check_public_send_key() {
-	if ! grep -o "$user .*" "$active_dir"/$public_user.conf/public_keys | cut -d " " -f 2 | openssl enc -k "$public_key" -aes256 -base64 -A -d -in - -pbkdf2 &>/dev/null; then
+	if ! grep -o "^$user .*" "$active_dir"/$public_user.conf/public_keys | cut -d " " -f 2 | openssl enc -k "$public_key" -aes256 -base64 -A -d -in - -pbkdf2 &>/dev/null; then
 		echo "Incorrect public encryption key of recipient entered"
 		exit 7
 	fi
@@ -107,7 +107,7 @@ EOF
 			exit 4
 		fi
 		futurepub="$2"
-		if [ "$(grep -o "$futurepub .*" $active_dir/$user.conf/public_keys)" ]; then
+		if [ "$(grep -o "^$futurepub .*" $active_dir/$user.conf/public_keys)" ]; then
 			echo "The public key for user $futurepub will be changed. You will need to enter the current key for this user and also notify the user that you have replaced their key. Continue?"
 			read -rp "? [y/N] " q_change_pub
 			case "$q_change_pub" in
@@ -159,7 +159,7 @@ EOF
 			exit 4
 		fi
 		futurepub="$2"
-		if [ ! "$(grep -o "$futurepub .*" $active_dir/$user.conf/public_keys)" ]; then
+		if [ ! "$(grep -o "^$futurepub .*" $active_dir/$user.conf/public_keys)" ]; then
 			echo "User $futurepub not found in public key file"
 			exit 4
 		fi
@@ -249,13 +249,13 @@ EOF
 			exit 4
 		fi
 		id="$2"
-		if [ ! "$(ls -A $active_dir/$user/public | grep -o "$id=.*")" ]; then
+		if [ ! "$(ls -A $active_dir/$user/public | grep -o "^$id=.*")" ]; then
 			echo "There is no message with this ID"
 			exit 5
 		fi
-		author="$(ls -A $active_dir/$user/public | grep -o "$id=.*" | cut -d "=" -f 2)"
+		author="$(ls -A $active_dir/$user/public | grep -o "^$id=.*" | cut -d "=" -f 2)"
 		if [ "$PUB_EX" == 1 ]; then
-			PUBKEY="$(grep $HOME/.mail_tty.pub "$author .*" | cut -d " " -f 2)"
+			PUBKEY="$(grep $HOME/.mail_tty.pub "^$author .*" | cut -d " " -f 2)"
 		else
 			ask_public_key
 			public_user="$author" check_public_key
@@ -276,7 +276,7 @@ EOF
 			exit 4
 		fi
 		id="$2"
-		if [ ! "$(ls -A $active_dir/$user/private | grep -o "$id=.*")" ]; then
+		if [ ! "$(ls -A $active_dir/$user/private | grep -o "^$id=.*")" ]; then
 			echo "There is no message with this ID"
 			exit 5
 		fi
@@ -300,7 +300,7 @@ EOF
 			echo "Recipient mail directory not found"
 			exit 4
 		fi
-		if [ "$(grep "$user .*" "$active_dir"/$public_user.conf/public_keys)" ]; then
+		if [ "$(grep "^$user .*" "$active_dir"/$public_user.conf/public_keys)" ]; then
 			author="$public_user" ask_public_key
 			check_public_send_key
 		else
