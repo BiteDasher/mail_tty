@@ -1,5 +1,6 @@
 # mail_tty
-A simple local mail client for exchanging short encrypted messages
+A simple local mail client for exchanging short encrypted messages \
+![Screenshot](https://beeimg.com/images/f28395579611.png)
 
 ## Dependencies:
 ```
