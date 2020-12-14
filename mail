@@ -312,6 +312,7 @@ EOF
 		[ "$(command -v $EDITOR)" ] || EDITOR=vim
 		temp_file="$active_dir/$user/$(openssl rand -hex 20)"
 		touch $temp_file
+		chmod 600 $temp_file
 		read -rp "Enter a subject for your letter: " subject
 		echo 'Subject: '$subject'' >$temp_file
 		echo 'Date: '$(date "+%c")'' >>$temp_file
