@@ -316,14 +316,12 @@ EOF
 		echo 'Date: '$(date "+%c")'' >>$temp_file
 		$EDITOR $temp_file
 		freemsg="$(($(ls -A $active_dir/$public_user/public | cut -d "=" -f 1 | sort -V | sed '$!d') + 1))"
-		[ -z "$freemsg" ] && freemsg=1
 		openssl enc -k "$public_key" -aes256 -base64 -A -e -in "$temp_file" -out $active_dir/$public_user/public/"$freemsg=$user" -pbkdf2 || {
 			echo "Something went wrong while sending message"
 			rm $temp_file
 			exit 6
 		}
 		pfreemsg="$(($(ls -A $active_dir/$user/private | cut -d "=" -f 1 | sort -V | sed '$!d') + 1))"
-		[ -z "$pfreemsg" ] && pfreemsg=1
 		openssl enc -k "$entered_key" -aes256 -base64 -A -e -in "$temp_file" -out $active_dir/$user/private/"$pfreemsg=$freemsg=$public_user" -pbkdf2 || {
 			echo "Something went wrong while saving message"
 			rm $temp_file
