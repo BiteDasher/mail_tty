@@ -39,7 +39,6 @@ if [ ! -d "$active_dir"/$user.conf ]; then
 		fi
 		genrandom | openssl enc -k "$private_key" -aes256 -base64 -A -e -in - -out $active_dir/$user.conf/passphrase -pbkdf2
 		mkdir -p "$active_dir"/"$user".conf
-		echo "$q_1" >$active_dir/$user.conf/restore
 	done
 	echo "Configuration done!"
 fi
@@ -92,7 +91,7 @@ usage: mail [action] [user/letter]
     rmmsg [pub/prv]	Remove message(s) (public or private)
     write [user]	Write a message to another user
     readpub [ID]	Read a public message from another user
-    readprv [ID]	Read Read a message you sent to someone
+    readprv [ID]	Read a message you sent to someone
     keys		Show all public keys
 
 mail_tty - a simple local mail client for exchanging short encrypted messages
