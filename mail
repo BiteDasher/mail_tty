@@ -240,8 +240,8 @@ EOF
 		done
 		;;
 	readpub)
-		ask_private_key
-		check_private_key
+		#ask_private_key
+		#check_private_key
 		if [ ! "$2" ]; then
 			echo "Message ID not specified"
 			exit 4
