@@ -38,7 +38,6 @@ if [ ! -d "$active_dir"/$user.conf ]; then
 			continue
 		fi
 		genrandom | openssl enc -k "$private_key" -aes256 -base64 -A -e -in - -out $active_dir/$user.conf/passphrase -pbkdf2
-		mkdir -p "$active_dir"/"$user".conf
 	done
 	echo "Configuration done!"
 fi
