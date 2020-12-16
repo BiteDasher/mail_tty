@@ -8,6 +8,7 @@ if [ ! -d "$active_dir" ]; then
 	isroot
 	mkdir -p $active_dir
 	chmod -R 777 $active_dir
+	exit 0
 fi
 genrandom() {
 	openssl rand -hex 100
