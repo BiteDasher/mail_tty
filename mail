@@ -33,7 +33,7 @@ if [ ! -d "$active_dir"/$user.conf ]; then
 	touch "$active_dir"/$user.conf/public_keys
 	chmod 704 "$active_dir"/$user.conf/public_keys
 	until [ -n "$private_key" ]; do
-		read -rsp "Enter the password for the private messages directory of user $user: " private_key
+		read -rsp "Enter the password for the private messages directory of user $user: " private_key; echo ""
 		if [ -z "$private_key" ]; then
 			echo "key not entered"
 			continue
@@ -62,7 +62,7 @@ check_public_send_key() {
 }
 ask_private_key() {
 	if [ -n "$KEY" ]; then entered_key="$KEY"; else
-		read -rsp "Enter your private key: " entered_key
+		read -rsp "Enter your private key: " entered_key; echo ""
 		if [ -z "$entered_key" ]; then
 			echo "No encryption key entered"
 			exit 3
@@ -71,7 +71,7 @@ ask_private_key() {
 }
 ask_public_key() {
 	if [ -n "$PUBKEY" ]; then public_key="$PUBKEY"; else
-		read -rsp "Enter your public key for user $author: " public_key
+		read -rsp "Enter your public key for user $author: " public_key; echo ""
 		if [ -z "$public_key" ]; then
 			echo "No encryption key entered"
 			exit 3
@@ -115,9 +115,9 @@ EOF
 					;;
 				Y* | y*)
 					public_user="$futurepub"
-					read -rsp "Enter the current public key of user $futurepub: " public_key
+					read -rsp "Enter the current public key of user $futurepub: " public_key; echo ""
 					check_public_key
-					read -rsp "Enter the new public key for user $futurepub: " future_public_key
+					read -rsp "Enter the new public key for user $futurepub: " future_public_key; echo ""
 					if [ -z "$future_public_key" ]; then
 						echo "No encryption key entered"
 						exit 3
@@ -143,7 +143,7 @@ EOF
 					;;
 			esac
 		fi
-		read -rsp "Enter the new public key for user $futurepub: " new_public_key
+		read -rsp "Enter the new public key for user $futurepub: " new_public_key; echo ""
 		if [ -z "$new_public_key" ]; then
 			echo "No encryption key entered"
 			exit 3
