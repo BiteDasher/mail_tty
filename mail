@@ -154,7 +154,7 @@ EOF
 		;;
 	rempub)
 		if [ ! "$2" ]; then
-			echo "No username entered, for whom the public key will be generated"
+			echo "No username entered, for whom the public key will be removed"
 			exit 4
 		fi
 		futurepub="$2"
@@ -164,7 +164,7 @@ EOF
 		fi
 		sed '/'$futurepub' .*/ d' -i "$active_dir"/$user.conf/public_keys
 		for msg in "$active_dir"/$user/public/*"=$futurepub"; do
-			mv $msg
+			rm $msg
 			sed '/.*='$futurepub'/ d' -i "$active_dir"/$user.conf/journal
 		done
 		echo "Done."
