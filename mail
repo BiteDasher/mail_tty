@@ -16,7 +16,6 @@ genrandom() {
 user="$(whoami)"
 [ -f $HOME/.mail_tty.prv ] && KEY="$(cat $HOME/.mail_tty.prv)" || KEY=""
 [ -f $HOME/.mail_tty.pub ] && PUB_EX=1
-echo -e "mail_tty client \e[0;32mv1\e[0m"
 if [ ! -d "$active_dir"/$user.conf ]; then
 	echo "Initialization the setting for the $user..."
 	mkdir "$active_dir"/$user
@@ -83,6 +82,7 @@ ask_public_key() {
 }
 case "$1" in
 help)
+echo -e "mail_tty client \e[0;32mv1\e[0m"
 	cat <<EOF
 usage: mail [action] [user/letter]
 
@@ -170,7 +170,7 @@ rempub)
 	fi
 	sed '/'$futurepub' .*/ d' -i "$active_dir"/$user.conf/public_keys
 	for msg in "$active_dir"/$user/public/*"=$futurepub"; do
-		rm $msg
+		rm -f $msg
 		sed '/.*='$futurepub'/ d' -i "$active_dir"/$user.conf/journal
 	done
 	echo "Done."
@@ -214,7 +214,7 @@ rmmsg)
 				continue
 			else
 				id="$(ls -A "$active_dir"/$user/public | grep -o "^$msg=.*")"
-				rm "$active_dir"/$user/public/$id
+				rm -f "$active_dir"/$user/public/$id
 				sed '/'$id'/ d' -i "$active_dir"/$user.conf/journal
 			fi
 		done
@@ -226,7 +226,7 @@ rmmsg)
 				continue
 			else
 				id="$(ls -A "$active_dir"/$user/private | grep -o "^$msg=.*")"
-				rm "$active_dir"/$user/private/$id
+				rm -f "$active_dir"/$user/private/$id
 			fi
 		done
 		;;
